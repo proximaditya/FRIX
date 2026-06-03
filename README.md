@@ -84,4 +84,3 @@ Built by @proximaditya
 
 ***
 
-Let me know the second you finish the Prisma downgrade, start `npm run dev`, and see **1200 ELO** on your screen! We are going to build the Match Timer immediately after.
