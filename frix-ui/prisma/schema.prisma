@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// 1. The USER Table
+model User {
+  id           String   @id @default(uuid())
+  clerkId      String   @unique // This links to your Clerk Google login
+  username     String   @unique
+  eloRating    Int      @default(1200) // Standard starting ELO in competitive games
+  totalMatches Int      @default(0)
+  wins         Int      @default(0)
+  mvpMedals    Int      @default(0)
+  createdAt    DateTime @default(now())
+  
+  // Relations
+  matchHistory Participant[]
+}
+
+// 2. The ARENA (Match) Table
+model Match {
+  id           String   @id @default(uuid())
+  topic        String
+  category     String   // e.g., "Tech", "Politics", "Gaming"
+  winningTeam  String?  // "A", "B", or "Draw"
+  durationMins Int      @default(10)
+  createdAt    DateTime @default(now())
+
+  // Relations
+  participants Participant[]
+}
+
+// 3. The PARTICIPANT Table (Links Users to Matches)
+model Participant {
+  id          String   @id @default(uuid())
+  matchId     String
+  userId      String
+  team        String   // "A" or "B"
+  aiScore     Int      @default(0) // What the AI Umpire rated them
+  crowdScore  Int      @default(0) // What the audience voted
+  isMvp       Boolean  @default(false)
+  
+  // Relations
+  match       Match    @relation(fields: [matchId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+
+  // A user can only be in the same match once
+  @@unique([matchId, userId]) 
+}
