@@ -44,3 +44,44 @@ To run FRIX locally, you need to spin up both the Go Engine and the Next.js UI.
 ```bash
 cd frix-backend
 go mod tidy
+
+Create a `.env` file in `frix-backend`:
+```env
+GROQ_API_KEY=your_groq_api_key_here
+```
+
+Run the server:
+```bash
+go run .
+# Expected Output: 🔥 FRIX Engine started on :8080
+```
+
+### Step 2: Start the Next.js Frontend
+Open a new terminal window.
+```bash
+cd frix-ui
+npm install
+```
+
+Create a `.env` file in `frix-ui`:
+```env
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+DATABASE_URL=postgresql://...
+```
+
+Start the UI:
+```bash
+npx prisma generate
+npm run dev
+```
+
+Visit http://localhost:3000.
+
+Built by @proximaditya
+
+***
+
+Let me know the second you finish the Prisma downgrade, start `npm run dev`, and see **1200 ELO** on your screen! We are going to build the Match Timer immediately after.
