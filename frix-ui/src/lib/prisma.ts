@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client'
-
-// 1. Force-feed the URL into the Node process to bypass Next.js dropping it
-process.env.DATABASE_URL = "postgresql://neondb_owner:npg_WJDK8ktNjR0E@ep-floral-rain-ao8hajr6-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require";
+import { PrismaNeon } from '@prisma/adapter-neon'
 
 const prismaClientSingleton = () => {
-  // 2. Pass a basic config to satisfy the Prisma 7 non-empty requirement
+  const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL! })
+
   return new PrismaClient({
+    adapter,
     log: ['error', 'warn'],
   })
 }
